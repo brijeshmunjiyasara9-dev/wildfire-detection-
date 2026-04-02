@@ -1,40 +1,26 @@
-# 🔥 WildfireWatch — AI MLOps Platform
+# 🔥 WildfireWatch — Full MLOps Platform
 
-> Real-time wildfire detection from video footage using **MobileNetV2 transfer learning** with sliding-window heatmap analysis. Full-stack MLOps platform with model registry, training pipeline, and research archive.
+> **AI-powered wildfire detection from video footage.** Real-time MobileNetV2-based binary classifier with sliding-window heatmap analysis. 97% accuracy on 30,000+ images.
 
-[![Frontend](https://img.shields.io/badge/Frontend-React%20%2B%20Vite-61DAFB?logo=react)](./frontend)
-[![Backend](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi)](./backend)
-[![Model](https://img.shields.io/badge/ML-TensorFlow%20%2B%20MobileNetV2-FF6F00?logo=tensorflow)](./backend/ml)
-[![DB](https://img.shields.io/badge/Database-Turso%20LibSQL-4FC3F7)](https://turso.tech)
-[![Storage](https://img.shields.io/badge/Storage-Cloudflare%20R2-F48120?logo=cloudflare)](https://cloudflare.com)
-
----
-
-## 📊 Model Performance
-
-| Metric | Value |
-|--------|-------|
-| Test Accuracy | **97.02%** |
-| Precision | **97.63%** |
-| Recall | **96.95%** |
-| F1 Score | **0.9729** |
-| Training Images | 30,250 |
-| Architecture | MobileNetV2 + Custom Head |
+![WildfireWatch Banner](https://img.shields.io/badge/WildfireWatch-MLOps_Platform-FF6B00?style=for-the-badge&logo=tensorflow)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react)](https://react.dev)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16-FF6F00?style=flat&logo=tensorflow)](https://tensorflow.org)
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-Browser → Vercel (React SPA) → Railway (FastAPI) → Turso (LibSQL) + Cloudflare R2
+Browser → Vercel (React) → Railway (FastAPI) → Turso (LibSQL) + Cloudflare R2
 ```
 
-| Layer | Service | Purpose |
-|-------|---------|---------|
-| Frontend | **Vercel** | React.js SPA with Tailwind + Framer Motion |
-| Backend | **Railway** | Python FastAPI with TensorFlow (persistent) |
-| Database | **Turso** | All metadata: jobs, models, training records |
-| Storage | **Cloudflare R2** | Binary files: videos, .keras models, datasets |
+| Layer | Service | Free Tier |
+|---|---|---|
+| React Frontend | **Vercel** | ✅ Unlimited |
+| FastAPI + ML Backend | **Railway** | ✅ 500 hrs/month |
+| Database (metadata) | **Turso (LibSQL)** | ✅ 9GB, 1B reads/month |
+| File Storage (videos/models) | **Cloudflare R2** | ✅ 10GB, 1M requests/month |
 
 ---
 
@@ -42,45 +28,48 @@ Browser → Vercel (React SPA) → Railway (FastAPI) → Turso (LibSQL) + Cloudf
 
 ```
 wildfire-platform/
-├── frontend/                    # React.js (Vite + Tailwind CSS)
+├── frontend/                      # React.js (Vite + Tailwind + Framer Motion)
 │   ├── src/
 │   │   ├── pages/
-│   │   │   ├── Home.jsx         # Landing page + methodology + demo
-│   │   │   ├── Detect.jsx       # Video upload & real-time detection
-│   │   │   ├── Research.jsx     # Public detection archive + charts
-│   │   │   ├── Admin.jsx        # Protected admin panel
-│   │   │   └── AdminLogin.jsx   # JWT auth login
+│   │   │   ├── Home.jsx           # 3D landing page with methodology + demo
+│   │   │   ├── Detect.jsx         # Video upload & detection job polling
+│   │   │   ├── Research.jsx       # Detection archive + Recharts analytics
+│   │   │   ├── Admin.jsx          # Admin dashboard (models/training/datasets)
+│   │   │   └── AdminLogin.jsx     # JWT-protected login
 │   │   ├── components/
-│   │   │   ├── Navbar.jsx       # Navigation + API health status
-│   │   │   ├── FireParticles.jsx # Canvas fire animation
-│   │   │   └── StatsCard.jsx    # Metric display cards
-│   │   ├── api/
-│   │   │   └── client.js        # Axios API client
-│   │   └── context/
-│   │       └── AuthContext.jsx  # JWT state management
-│   ├── vercel.json              # Vercel deployment config
-│   └── .env.example
+│   │   │   ├── FireParticles.jsx  # Canvas-based fire particle animation
+│   │   │   ├── NeuralNetwork3D.jsx# Animated neural network visualization
+│   │   │   ├── Globe3D.jsx        # 3D rotating globe with hotspots
+│   │   │   ├── Navbar.jsx         # Sticky navbar with API health check
+│   │   │   └── StatsCard.jsx      # Metric card component
+│   │   ├── api/client.js          # Axios API client
+│   │   └── context/AuthContext.jsx# JWT auth context
+│   ├── .env.example
+│   └── vercel.json
 │
-├── backend/                     # Python FastAPI → Railway
-│   ├── main.py                  # FastAPI app entry point
-│   ├── Dockerfile               # Railway container
-│   ├── railway.toml             # Railway config
+├── backend/                       # Python FastAPI → Railway
+│   ├── main.py                    # App entry, CORS, lifespan events
+│   ├── Dockerfile                 # Railway container build
+│   ├── railway.toml               # Railway deployment config
 │   ├── requirements.txt
 │   ├── routers/
-│   │   ├── detection.py         # Video upload & job management
-│   │   ├── demo.py              # Public demo video routes
-│   │   ├── admin.py             # Protected admin routes
-│   │   └── research.py         # Public research data routes
+│   │   ├── detection.py           # Video upload, job polling, streaming
+│   │   ├── admin.py               # Models, training, datasets, demo mgmt
+│   │   ├── demo.py                # Public demo video endpoints
+│   │   └── research.py            # Detection archive & stats
 │   ├── ml/
-│   │   ├── inference.py         # Single image + batch classification
-│   │   ├── trainer.py           # MobileNetV2 transfer learning
-│   │   └── video_processor.py  # Sliding window heatmap detection
+│   │   ├── inference.py           # MobileNetV2 single-image classifier
+│   │   ├── trainer.py             # Transfer learning training pipeline
+│   │   └── video_processor.py    # Sliding-window heatmap video processor
 │   ├── db/
-│   │   └── turso.py             # Turso LibSQL connection
-│   └── storage/
-│       └── r2.py                # Cloudflare R2 (S3-compatible)
+│   │   └── turso.py               # LibSQL (Turso) async client
+│   ├── storage/
+│   │   └── r2.py                  # Cloudflare R2 (S3-compatible) client
+│   └── .env.example
 │
-└── README.md
+└── docs/                          # Additional documentation
+    ├── API.md                     # Full API reference
+    └── SETUP.md                   # Detailed setup guide
 ```
 
 ---
@@ -88,69 +77,46 @@ wildfire-platform/
 ## 🚀 Quick Start (Local Development)
 
 ### Prerequisites
-- Python 3.10+
 - Node.js 18+
-- Turso account (free at turso.tech)
-- Cloudflare account with R2 enabled (free 10GB)
+- Python 3.10+
+- Turso CLI (optional, for local DB)
 
-### 1. Backend Setup
+### 1. Clone & Setup
+
+```bash
+git clone https://github.com/YOUR_USERNAME/wildfirewatch.git
+cd wildfirewatch
+```
+
+### 2. Backend Setup
 
 ```bash
 cd backend
+cp .env.example .env
+# Fill in your credentials in .env
 
 # Install dependencies
 pip install -r requirements.txt
-
-# Copy and fill environment variables
-cp .env.example .env
-# Edit .env with your Turso URL, R2 credentials, etc.
 
 # Start the server
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-The backend will auto-initialize the database schema on first start.
-
-### 2. Frontend Setup
+### 3. Frontend Setup
 
 ```bash
 cd frontend
+cp .env.example .env.local
+# Set VITE_API_BASE_URL=http://localhost:8000
 
 # Install dependencies
 npm install
-
-# Copy and configure
-cp .env.example .env.local
-# Set VITE_API_BASE_URL=http://localhost:8000
 
 # Start development server
 npm run dev
 ```
 
-Visit `http://localhost:5173`
-
-### 3. Seed Initial Model
-
-After training your model in Kaggle:
-
-1. Download `wildfire_detection_model.keras` from Kaggle output
-2. Upload to Cloudflare R2 at path: `models/default/model.keras`
-3. Insert seed record in Turso:
-
-```sql
-INSERT INTO models (id, name, version, file_path, accuracy, is_active, created_at)
-VALUES (
-  'default',
-  'MobileNetV2-WildfireV1',
-  '1.0',
-  'models/default/model.keras',
-  0.9702,
-  1,
-  '2025-04-02T00:00:00Z'
-);
-```
-
-Or use the Admin panel → Models → Upload Model
+Visit `http://localhost:5173` 🎉
 
 ---
 
@@ -158,142 +124,184 @@ Or use the Admin panel → Models → Upload Model
 
 ### Backend → Railway
 
-1. Push `backend/` to GitHub
-2. Connect repo to Railway (railway.app)
-3. Set all environment variables in Railway dashboard:
-
-```
-TURSO_DATABASE_URL=libsql://your-db.turso.io
-TURSO_AUTH_TOKEN=your-token
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD_HASH=$2b$12$...
-JWT_SECRET=your-256-bit-secret
-R2_ACCOUNT_ID=your-account-id
-R2_ACCESS_KEY_ID=your-key-id
-R2_SECRET_ACCESS_KEY=your-secret
-R2_BUCKET_NAME=wildfirewatch
-R2_PUBLIC_URL=https://pub-xxxx.r2.dev
-MAX_VIDEO_SIZE_MB=500
-TEMP_DIR=/tmp
-FRONTEND_URL=https://your-app.vercel.app
-```
-
-4. Railway auto-builds from Dockerfile
+1. **Create Railway project** at [railway.app](https://railway.app)
+2. **Connect GitHub repo**, select `/backend` as root directory
+3. **Set environment variables** in Railway dashboard:
+   ```
+   TURSO_DATABASE_URL=libsql://your-db.turso.io
+   TURSO_AUTH_TOKEN=...
+   ADMIN_USERNAME=admin
+   ADMIN_PASSWORD_HASH=<bcrypt hash>
+   JWT_SECRET=<random 256-bit string>
+   R2_ACCOUNT_ID=...
+   R2_ACCESS_KEY_ID=...
+   R2_SECRET_ACCESS_KEY=...
+   R2_BUCKET_NAME=wildfirewatch
+   R2_PUBLIC_URL=https://pub-xxxx.r2.dev
+   ```
+4. Railway auto-deploys via Dockerfile
 
 ### Frontend → Vercel
 
-1. Push `frontend/` to GitHub
-2. Import in Vercel
-3. Set environment variable:
-   - `VITE_API_BASE_URL` = Your Railway URL (e.g., `https://wildfirewatch.up.railway.app`)
-4. Deploy
+1. **Import GitHub repo** at [vercel.com](https://vercel.com)
+2. Set **Root Directory** to `frontend`
+3. **Add environment variable**:
+   ```
+   VITE_API_BASE_URL=https://your-app.up.railway.app
+   ```
+4. Deploy!
 
 ---
 
-## 🔑 Admin Panel
+## 🧠 ML Model
 
-- Navigate to `/admin/login`
-- Default credentials (set in `.env`): `admin` / your password
-- Token expires in 24 hours
-- **Never stored in localStorage** — re-login on refresh for security
-
-### Admin Capabilities:
-- **Dashboard**: Model stats, today's job count
-- **Models**: Upload .keras models, activate deployment model
-- **Training**: Start new training runs with custom hyperparameters, live log viewer
-- **Datasets**: Upload ZIP datasets for training (wildfire/nowildfire structure)
-- **Demo Videos**: Upload featured detection demo for homepage
-- **Research Export**: Full detection archive in CSV/JSON
-
----
-
-## 🧠 ML Pipeline Details
-
-### Model Architecture
+### Architecture
 ```
-Input (224×224×3)
-  → MobileNetV2 (frozen ImageNet weights, 2.26M params)
-  → GlobalAveragePooling2D
-  → Dense(128, ReLU)
-  → Dense(1, Sigmoid)
-Output: P(wildfire)
+MobileNetV2 (ImageNet pretrained, frozen)
+    ↓
+GlobalAveragePooling2D
+    ↓
+Dense(128, ReLU)
+    ↓
+Dense(1, Sigmoid)  → P(wildfire)
 ```
 
-### Video Detection Algorithm
+### Training
+- **Dataset**: Wildfire Prediction Dataset — 30,250 train / 6,300 val / 6,300 test
+- **Optimizer**: Adam (lr=0.001)
+- **Loss**: Binary Crossentropy
+- **Callbacks**: EarlyStopping(patience=3), ModelCheckpoint
+
+### Performance (Test Set)
+| Metric | Value |
+|--------|-------|
+| Accuracy | **97.02%** |
+| Precision | 97.63% |
+| Recall | 96.95% |
+| F1 Score | **0.9729** |
+| True Positives | 3,374 |
+| False Positives | 82 |
+
+### Video Detection Parameters
+```python
+IMAGE_SIZE = 224          # Model input resolution
+CONFIDENCE_THRESHOLD = 0.6 # Wildfire alert threshold
+DETECT_INTERVAL = 30       # Process every 30th frame
+WINDOW_SIZE = 32           # Sliding window patch size
+PROCESS_SCALE = 0.15       # Frame downscale factor
+BATCH_SIZE = 2             # Windows per inference batch
+MAX_FRAMES = 500           # Maximum frames to process
 ```
-For each video:
-  For every 30th frame:
-    1. Resize frame to 15% scale for speed
-    2. Slide 32×32 window across resized frame
-    3. Batch-predict windows (batch_size=2)
-    4. Build confidence heatmap
-    5. Threshold at 0.6 → fire regions
-    6. Find contours → bounding boxes
-    7. Overlay heatmap (red/orange gradient)
-    8. Track: wildfire_frames, max_conf, avg_conf
-```
 
 ---
 
-## 📡 API Reference
+## 🔌 API Reference
 
-### Public Endpoints
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/` | Health & info |
-| `GET` | `/health` | Health check + model status |
-| `POST` | `/api/detect/upload` | Upload video for detection |
-| `GET` | `/api/detect/job/{id}` | Poll job status |
-| `GET` | `/api/detect/video/{id}` | Stream output video |
-| `GET` | `/api/demo/videos` | List demo videos |
-| `GET` | `/api/research/detections` | Public detection archive |
-| `GET` | `/api/research/stats` | Aggregate statistics |
+### Detection
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/detect/upload` | Upload video for detection |
+| GET | `/api/detect/job/{id}` | Poll job status |
+| GET | `/api/detect/video/{id}` | Stream output video |
 
-### Admin Endpoints (Bearer JWT required)
-| Method | Path | Description |
-|--------|------|-------------|
-| `POST` | `/api/admin/login` | Get JWT token |
-| `GET` | `/api/admin/models` | List all models |
-| `POST` | `/api/admin/models/upload` | Upload .keras model |
-| `POST` | `/api/admin/models/{id}/activate` | Set active model |
-| `POST` | `/api/admin/training/start` | Start training job |
-| `GET` | `/api/admin/training/{id}/logs` | Poll training logs |
-| `POST` | `/api/admin/dataset/upload` | Upload ZIP dataset |
-| `POST` | `/api/admin/demo/upload` | Upload demo video |
+### Demo
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/demo/videos` | List active demo videos |
+| GET | `/api/demo/stream/{id}/{type}` | Stream demo video |
 
-Interactive docs available at `/docs` when backend is running.
+### Research
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/research/detections` | Paginated detection history |
+| GET | `/api/research/stats` | Aggregate statistics |
 
----
-
-## 🗃️ Database Schema (Turso LibSQL)
-
-- **models**: Model registry with accuracy, architecture, R2 path
-- **detection_jobs**: All detection runs with stats and video paths  
-- **training_jobs**: Training history with epoch-by-epoch logs
-- **dataset_uploads**: Dataset catalog with image counts
-- **demo_videos**: Homepage demo configuration
+### Admin (JWT Required)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/admin/login` | Get JWT token |
+| GET | `/api/admin/models` | List all models |
+| POST | `/api/admin/models/upload` | Upload `.keras` model |
+| POST | `/api/admin/models/{id}/activate` | Set active model |
+| POST | `/api/admin/training/start` | Start training job |
+| GET | `/api/admin/training/{id}/logs` | Get training logs |
+| POST | `/api/admin/dataset/upload` | Upload image dataset (zip) |
+| POST | `/api/admin/demo/upload` | Upload featured demo video |
 
 ---
 
-## 🛡️ Security
+## 📊 Database Schema (Turso)
 
-- JWT tokens stored in **React state only** (not localStorage)
-- Admin password stored as **bcrypt hash** in env vars
-- All API tokens stored as **Railway environment variables**
-- R2 presigned URLs for temporary video access
-- CORS configured to allow only your frontend domain
+### `models`
+Stores ML model metadata — accuracy, version, active status, R2 file key.
+
+### `detection_jobs`
+Per-video detection results — status, wildfire %, confidence scores, processing time.
+
+### `training_jobs`
+Training run history — hyperparameters, epoch logs, final metrics.
+
+### `dataset_uploads`
+Uploaded image datasets — class counts, R2 keys.
+
+### `demo_videos`
+Homepage demo videos — both original and detection output R2 keys.
 
 ---
 
-## 📝 License
+## 🔒 Security
 
-MIT License — Free for academic and research use.
+- **JWT Authentication** for all admin routes (24h expiry, stored in React state)
+- **Bcrypt password hashing** for admin credentials
+- **Never expose credentials** in frontend code
+- All binary files stored in R2, only R2 keys in database
+- CORS configured per environment
 
 ---
 
-## 🙏 Acknowledgments
+## 🛠️ Tech Stack
 
-- **Dataset**: Wildfire Prediction Dataset (Kaggle)
-- **Architecture**: MobileNetV2 (Google Brain)
-- **Framework**: FastAPI + React
-- **Deployment**: Railway + Vercel + Turso + Cloudflare
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 19, Vite, Tailwind CSS, Framer Motion, Recharts |
+| Backend | Python 3.10, FastAPI, asyncio |
+| ML | TensorFlow 2.16 (CPU), OpenCV, Pillow, NumPy |
+| Database | Turso (LibSQL / SQLite edge) |
+| Storage | Cloudflare R2 (S3-compatible) |
+| Auth | JWT (python-jose), bcrypt (passlib) |
+| Deployment | Railway (backend), Vercel (frontend) |
+
+---
+
+## 📝 Getting Your Model Into the System
+
+1. **Train** in Kaggle notebook (see `real-time-wildfire-image-video-classification.ipynb`)
+2. **Download** `wildfire_detection_model.keras` from Kaggle output
+3. **Upload** to Cloudflare R2: `models/default/model.keras`
+4. **Seed** the database:
+   ```sql
+   INSERT INTO models (id, name, version, file_path, accuracy, is_active, created_at)
+   VALUES ('default', 'MobileNetV2-WildfireV1', '1.0',
+           'models/default/model.keras', 0.9702, 1, '2025-04-02T00:00:00Z');
+   ```
+5. Or use the **Admin Panel** → Models tab to upload directly
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/amazing-feature`
+3. Commit: `git commit -m 'Add amazing feature'`
+4. Push: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+*Built with ❤️ for wildfire research and early warning systems.*
